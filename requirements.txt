@@ -1,0 +1,6 @@
+streamlit
+requests
+urllib3
+beautifulsoup4
+selenium
+webdriver-manager
