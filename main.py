@@ -1,43 +1,27 @@
-import streamlit as st
+import click
 import importlib
+from . import Beautified_Scraper
+from . import Raw_Scraper
 
-def main():
+@click.command(help="Multi-Scraper CLI tool")
+@click.option('--raw', is_flag=True, help='Use raw scraper')
+@click.option('--driver', is_flag=True, help='Use ChromeDriver scraper')
+@click.option('--website', required=True, help='Website URL to scrape')
+def main(raw, driver, website):
+    """
+    Multi-Scraper CLI tool
+    
+    USAGE:
+    multi-scraper --raw --website <website_url>
+    multi-scraper --driver --website <website_url>
+    """
 
-    with st.sidebar:
-        script_options = ["ChromeDriver Scraper", "Raw-Scraper"]
-        selected_script = st.radio("Select a script", script_options)
+    if raw:
+        Raw_Scraper.main(website)
+    elif driver:
+        Beautified_Scraper.main(website)
+    else:
+        click.echo("Please specify either '--raw' or '--driver' option.")
 
-    if selected_script == "ChromeDriver Scraper":
-        st.title("ChromeDriver Scraper")
-        beautified_scraper = importlib.import_module("Beautified-Scraper")
-
-        url_to_scrape = st.text_input("Enter a URL to scrape:")
-
-        if st.button("Scrape"):
-            if url_to_scrape:
-                st.info("Scraping in progress...")
-                title, headings, paragraphs, links = beautified_scraper.scrape_url(url_to_scrape)
-
-                if title:
-                    st.success("Scraping completed successfully!")
-                    st.write("Please check your terminal for the scraped data.")
-                    print(f"Title: {title}")
-                    print("Headings:")
-                    print(headings)
-                    print("Paragraphs:")
-                    print(paragraphs)
-                    print("Links:")
-                    print(links)
-                    beautified_scraper.save_to_txt(title, headings, paragraphs, links, url_to_scrape)
-                else:
-                    st.error("Failed to scrape the URL.")
-            else:
-                st.warning("Please enter a URL to scrape.")
-
-    elif selected_script == "Raw-Scraper":
-        st.title("Raw Scraper")
-        raw_scraper = importlib.import_module("Raw-Scraper")
-        raw_scraper.main()
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
