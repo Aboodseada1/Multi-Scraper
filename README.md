@@ -4,6 +4,9 @@ A Web scraping tool developed using Python and Streamlit. The tool allows users 
 ## Installation
 > pip install -r requirements.txt
 
+## Usage
+> streamlit run main.py
+
 ## Tools:
 - ChromeDriver Scraper
 The ChromeDriver Scraper script utilizes Selenium and ChromeDriver to scrape web pages. It extracts the title, headings, paragraphs, and links from the specified URL.
