@@ -1,0 +1,33 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build and publish
+        run: |
+          python setup.py sdist bdist_wheel
+          python -m pip install --upgrade twine
+          python -m twine upload --repository pypi dist/*
+        env:
+          TWINE_USERNAME: "__token__"
+          TWINE_PASSWORD: ${{ secrets.pypi-AgEIcHlwaS5vcmcCJGIxYTBiNTUyLTllOTYtNGVhZC1iN2M3LTk4ODhmMmM3MWFkOAACKlszLCJhN2IwNGFmOC1lNmVmLTQ5MzMtYjA0My1lZWQyM2IzYjhiZmMiXQAABiAGrysND1vxeG2hvdYuMpeayB5b5LkuNT1iJFIQInpFWg"
